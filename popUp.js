@@ -1,9 +1,8 @@
 export function moviePopup(movie) {
-    // Supprime une popup existante
+
     const oldPopup = document.getElementById('movie-popup');
     if (oldPopup) oldPopup.remove();
 
-    // Overlay avec fond transparent et flou
     const overlay = document.createElement('div');
     overlay.id = 'movie-popup';
     overlay.style.position = 'fixed';
@@ -18,7 +17,7 @@ export function moviePopup(movie) {
     overlay.style.justifyContent = 'center';
     overlay.style.zIndex = 1000;
 
-    // Popup centrale en flex
+
     const popup = document.createElement('div');
     popup.style.background = 'rgba(35,35,35,0.95)';
     popup.style.color = '#fff';
@@ -32,7 +31,6 @@ export function moviePopup(movie) {
     popup.style.overflow = 'hidden';
     popup.style.flexDirection = 'row';
 
-    // Image à gauche
     const img = document.createElement('img');
     img.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/220x330?text=No+Image';
     img.alt = movie.title || movie.name || "Titre inconnu";
@@ -43,7 +41,6 @@ export function moviePopup(movie) {
     img.style.flexShrink = '0';
     img.style.background = '#111';
 
-    // Contenu à droite
     const content = document.createElement('div');
     content.style.padding = '32px 28px';
     content.style.display = 'flex';
@@ -52,14 +49,12 @@ export function moviePopup(movie) {
     content.style.alignItems = 'flex-start';
     content.style.flex = '1';
 
-    // Titre
     const title = document.createElement('h2');
     title.textContent = movie.title || movie.name || "Titre inconnu";
     title.style.margin = '0 0 18px 0';
     title.style.fontSize = '1.5rem';
     title.style.color = '#fff';
 
-    // Description
     const desc = document.createElement('p');
     desc.textContent = movie.overview || "Aucune description disponible.";
     desc.style.fontSize = '1rem';
@@ -120,7 +115,8 @@ export function moviePopup(movie) {
     overlay.appendChild(popup);
     document.body.appendChild(overlay);
 
-    // --- RESPONSIVE ---
+
+    
     const style = document.createElement('style');
     style.textContent = `
     @media (max-width: 600px) {
