@@ -21,44 +21,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const favbtn = document.createElement('button');
     favbtn.className = "favorites";
-    favbtn.textContent = "🎬 Voir mes favoris"
+    favbtn.textContent = "🎬 Mes favoris"
     genresContainer.appendChild(favbtn);
 
-                  genresContainer.addEventListener("click", async (event) => {
-            if (event.target.classList.contains('genre')) {
-                document.querySelectorAll('.genre').forEach(btn => btn.classList.remove('selected'));
-                event.target.classList.add('selected');
-                const genreId = event.target.dataset.genreId;
-                await api.getMoviesByGenre(genreId);
-            } else if (event.target.classList.contains('favorites')) {
-                document.querySelectorAll('.genre').forEach(btn => btn.classList.remove('selected'));
-                // Appel de getFavorites ici :
-                const favorites = getFavorites();
-                const moviesList = document.getElementById('movies-list');
-                moviesList.innerHTML = "";
-                if (favorites.length === 0) {
-                    moviesList.innerHTML = "<div style='color:#fff;text-align:center;'>Aucun favori pour le moment.</div>";
-                } else {
-                    favorites.forEach(movie => {
-                        const div = document.createElement('div');
-                        div.className = "movie-card";
-                        const img = document.createElement('img');
-                        img.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/150';
-                        img.alt = movie.title || movie.name || "Titre inconnu";
-                        const title = document.createElement('h3');
-                        title.className = "movie-title";
-                        title.textContent = movie.title || movie.name || "Titre inconnu";
-                        const releaseDate = document.createElement('p');
-                        releaseDate.className = "release-date";
-                        releaseDate.textContent = `Release Date: ${movie.release_date}`;
-                        div.appendChild(img);
-                        div.appendChild(title);
-                        div.appendChild(releaseDate);
-                        moviesList.appendChild(div);
-                        // Si tu veux la popup sur les favoris aussi :
-                        div.onclick = () => import('./popUp.js').then(mod => mod.moviePopup(movie));
-                    });
-                }
+        genresContainer.addEventListener("click", async (event) => {
+        if (event.target.classList.contains('genre')) {
+            document.querySelectorAll('.genre').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            const genreId = event.target.dataset.genreId;
+            await api.getMoviesByGenre(genreId);
+        } else if (event.target.classList.contains('favorites')) {
+            document.querySelectorAll('.genre').forEach(btn => btn.classList.remove('selected'));
+
+            const favorites = getFavorites();
+            const moviesList = document.getElementById('movies-list');
+            moviesList.innerHTML = "";
+            if (favorites.length === 0) {
+                moviesList.innerHTML = "<div style='color:#fff;text-align:center;'>Aucun favori pour le moment.</div>";
+            } else {
+                favorites.forEach(movie => {
+                    const div = document.createElement('div');
+                    div.className = "movie-card";
+
+                    // Ajoute l'étoile sur chaque favori
+                    const badge = document.createElement('span');
+                    badge.className = "favorite-badge";
+                    badge.innerHTML = "★";
+                    div.appendChild(badge);
+
+                    const img = document.createElement('img');
+                    img.src = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : 'https://via.placeholder.com/150';
+                    img.alt = movie.title || movie.name || "Titre inconnu";
+                    const title = document.createElement('h3');
+                    title.className = "movie-title";
+                    title.textContent = movie.title || movie.name || "Titre inconnu";
+                    const releaseDate = document.createElement('p');
+                    releaseDate.className = "release-date";
+                    releaseDate.textContent = `Release Date: ${movie.release_date}`;
+                    div.appendChild(img);
+                    div.appendChild(title);
+                    div.appendChild(releaseDate);
+                    moviesList.appendChild(div);
+
+                    // Affiche la popup au clic
+                    div.onclick = () => import('./popUp.js').then(mod => mod.moviePopup(movie));
+                });
             }
+        }
     });
 });
