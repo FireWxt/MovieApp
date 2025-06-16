@@ -103,7 +103,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.querySelectorAll('.genre').forEach(btn => btn.classList.remove('selected'));
             showFavorites();
         }
+        
     });
+
+        const searchBar = document.getElementById('search-bar');
+    if (searchBar) {
+        searchBar.addEventListener('input', async (e) => {
+            const query = e.target.value.trim();
+            if (query.length === 0) {
+                api.getTrendingMovies();
+            } else {
+                const movies = await api.searchMovies(query);
+                renderMovies(movies);
+            }
+        });
+    } else {
+        console.warn('search-bar introuvable dans le DOM');
+    }
 });
 
 window.updateCurrentMoviesList = updateCurrentMoviesList;

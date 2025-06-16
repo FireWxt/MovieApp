@@ -130,7 +130,7 @@ export function moviePopup(movie, credits) {
     content.appendChild(release);
     content.appendChild(genresElem);
     content.appendChild(desc);
-
+    
     // Réalisateurs
     if (credits) {
         const directors = credits.crew.filter(person => person.job === "Director").map(person => person.name);
@@ -142,7 +142,8 @@ export function moviePopup(movie, credits) {
             content.appendChild(dirElem);
         }
     }
-
+    
+    content.appendChild(favBtn);
     // Crew unique (une carte par personne, tous les rôles listés)
     if (credits && credits.crew && credits.crew.length > 0) {
         const crewTitle = document.createElement('h3');
@@ -216,7 +217,6 @@ export function moviePopup(movie, credits) {
     }
 
     content.appendChild(closeBtn);
-    content.appendChild(favBtn);
 
     popup.appendChild(img);
     popup.appendChild(content);

@@ -92,11 +92,18 @@ h2 {
 }
 
 #movies-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 28px;
-  margin-top: 30px;
-  padding: 0;
+  display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 28px;
+    margin : auto;
+    margin-top: 30px;
+    padding: 0;
+    width: fit-content;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .movie-card {

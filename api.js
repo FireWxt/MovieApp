@@ -25,6 +25,20 @@ export async function getGenres() {
 }
 
 
+export async function searchMovies(query) {
+    try {
+        const response = await fetch(
+            `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&language=fr-FR&page=1&include_adult=false`,
+            options
+        );
+        const data = await response.json();
+        return data.results;
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
+
 export async function getMovieCredits(movieId) {
     const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`, options);
     return await response.json();
