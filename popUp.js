@@ -90,6 +90,7 @@ export function moviePopup(movie) {
         favBtn.onclick = () => {
             addToFavorites(movie);
             overlay.remove();
+            updateCurrentMoviesList();
         }
     } else {
         favBtn = document.createElement('button');
@@ -102,6 +103,7 @@ export function moviePopup(movie) {
         favBtn.onclick = () => {
             removeFromFavorites(movie.id);
             overlay.remove();
+            updateCurrentMoviesList();
         }
     }
 
