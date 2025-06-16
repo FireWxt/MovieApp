@@ -25,6 +25,12 @@ export async function getGenres() {
 }
 
 
+export async function getMovieCredits(movieId) {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`, options);
+    return await response.json();
+}
+
+
 export async function getTrendingMovies() {
     try {
         const response = await fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc', options);
@@ -63,7 +69,10 @@ export async function getTrendingMovies() {
             div.appendChild(title);
             div.appendChild(releaseDate);
             moviesList.appendChild(div);
-            div.onclick = () => popup.moviePopup(movie);
+            div.onclick = async () => {
+                const credits = await getMovieCredits(movie.id);
+                popup.moviePopup(movie, credits);
+            };
         });
     } catch (err) {
         console.error(err);
@@ -108,7 +117,10 @@ export async function getMoviesByGenre(genreId) {
             div.appendChild(title);
             div.appendChild(releaseDate);
             moviesList.appendChild(div);
-            div.onclick = () => popup.moviePopup(movie);
+            div.onclick = async () => {
+                const credits = await getMovieCredits(movie.id);
+                popup.moviePopup(movie, credits);
+            };
         });
     } catch (err) {
         console.error(err);

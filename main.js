@@ -1,8 +1,10 @@
 import * as api from "./api.js";
 
-
 let currentGenreId = null;
 let showingFavorites = false;
+
+// Stockage global des genres
+window.GENRES_LIST = {};
 
 function getFavorites() {
     const favorites = localStorage.getItem('favorites');
@@ -42,7 +44,11 @@ function renderMovies(movies) {
         div.appendChild(releaseDate);
         moviesList.appendChild(div);
 
-        div.onclick = () => import('./popUp.js').then(mod => mod.moviePopup(movie));
+        div.onclick = async () => {
+            const { getMovieCredits } = await import('./api.js');
+            const credits = await getMovieCredits(movie.id);
+            import('./popUp.js').then(mod => mod.moviePopup(movie, credits));
+        };
     });
 }
 
@@ -52,6 +58,7 @@ function showFavorites() {
     const favorites = getFavorites();
     renderMovies(favorites);
 }
+
 export function updateCurrentMoviesList() {
     if (showingFavorites) {
         showFavorites();
@@ -63,10 +70,14 @@ export function updateCurrentMoviesList() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // Récupère et stocke la liste des genres au chargement
+    const genres = await api.getGenres();
+    if (genres) {
+        genres.forEach(g => window.GENRES_LIST[g.id] = g.name);
+    }
 
     api.getTrendingMovies();
 
-    const genres = await api.getGenres();
     const genresContainer = document.querySelector('.genre-buttons');
     genres.forEach(genre => {
         const btn = document.createElement('button');
@@ -75,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         btn.dataset.genreId = genre.id;
         genresContainer.appendChild(btn);
     });
-
 
     const favbtn = document.createElement('button');
     favbtn.className = "favorites";
