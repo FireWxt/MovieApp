@@ -1,8 +1,12 @@
 <div class="container">
-  <input type="text" placeholder="Rechercher un film..." class="search-input" (input)="searchMovies($event)" />
+  <div class="header-controls">
+    <input type="text" placeholder="Rechercher un film..." class="search-input" (input)="searchMovies($event)" />
+    <button class="favorites-btn" (click)="loadFavorites()">♥ Favoris</button>
+  </div>
 
-  <h2>Ou choisir un genre</h2>
-  <div class="genre-buttons">
+  <h2 *ngIf="!showFavorites">Ou choisir un genre</h2>
+  <h2 *ngIf="showFavorites">Mes Films Favoris</h2>
+  <div class="genre-buttons" *ngIf="!showFavorites">
     <button *ngFor="let genre of genres" (click)="loadMoviesByGenre(genre.id)" [class.selected]="genre.id === selectedGenre">
       {{ genre.name }}
     </button>
@@ -13,6 +17,7 @@
       <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title">
       <h3 class="movie-title">{{ movie.title }}</h3>
       <p class="release-date">Release Date: {{ movie.release_date }}</p>
+      <p class="genres" *ngIf="movie.genre_ids">Genres: {{ getGenreNames(movie.genre_ids) }}</p>
     </div>
   </div>
 </div>

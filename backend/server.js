@@ -24,8 +24,8 @@ app.use('/api/movies', moviesRoute);
 // Servir les fichiers statiques du répertoire Angular
 app.use(express.static(path.join(__dirname, '../movie-app-angular/dist/movie-app-angular/browser')));
 
-// Route pour la page d'accueil de l'application Angular
-app.get('*', (req, res) => {
+// Rediriger toutes les autres requêtes vers l'application Angular
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, '../movie-app-angular/dist/movie-app-angular/browser/index.html'));
 });
 

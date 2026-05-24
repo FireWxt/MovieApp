@@ -28,10 +28,13 @@ export class MovieDetails {
     if (this.isFavorite(movie.id)) {
       favorites = favorites.filter((fav: any) => fav.id !== movie.id);
     } else {
-      favorites.push(movie);
+      // Sauvegarder le film avec toutes ses propriétés
+      // Cela inclut genre_ids si disponible
+      const movieToSave = { ...movie };
+      favorites.push(movieToSave);
     }
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    this.close.emit(); // Or update the state in a more sophisticated way
+    this.close.emit();
   }
 
   private getFavorites(): any[] {

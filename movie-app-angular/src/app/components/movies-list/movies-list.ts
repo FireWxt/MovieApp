@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Movie } from '../../services/movie';
 import { CommonModule } from '@angular/common';
 import { MovieDetails } from '../movie-details/movie-details';
@@ -15,8 +15,9 @@ export class MoviesList implements OnInit {
   selectedGenre: number | null = null;
   selectedMovie: any = null;
   selectedMovieCredits: any = null;
+  showFavorites: boolean = false;
 
-  constructor(private movieService: Movie) { }
+  constructor(private movieService: Movie, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadTrendingMovies();
@@ -26,28 +27,43 @@ export class MoviesList implements OnInit {
   loadTrendingMovies(): void {
     this.movieService.getTrendingMovies().subscribe(data => {
       this.movies = data;
+      this.showFavorites = false;
+      this.selectedGenre = null;
+      this.cdr.detectChanges();
     });
   }
 
   loadGenres(): void {
     this.movieService.getGenres().subscribe(data => {
       this.genres = data;
+      this.cdr.detectChanges();
     });
   }
 
   loadMoviesByGenre(genreId: number): void {
     this.selectedGenre = genreId;
+    this.showFavorites = false;
     this.movieService.getMoviesByGenre(genreId).subscribe(data => {
       this.movies = data;
+      this.cdr.detectChanges();
     });
+  }
+
+  loadFavorites(): void {
+    this.showFavorites = true;
+    this.selectedGenre = null;
+    const favorites = localStorage.getItem('favorites');
+    this.movies = favorites ? JSON.parse(favorites) : [];
   }
 
   searchMovies(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const query = inputElement.value;
     if (query) {
+      this.showFavorites = false;
       this.movieService.searchMovies(query).subscribe(data => {
         this.movies = data;
+        this.cdr.detectChanges();
       });
     } else {
       this.loadTrendingMovies();
@@ -58,6 +74,7 @@ export class MoviesList implements OnInit {
     this.selectedMovie = movie;
     this.movieService.getMovieCredits(movie.id).subscribe(credits => {
       this.selectedMovieCredits = credits;
+      this.cdr.detectChanges();
     });
   }
 
@@ -65,10 +82,19 @@ export class MoviesList implements OnInit {
     this.selectedMovie = null;
     this.selectedMovieCredits = null;
     // Re-render the list to update favorite status
-    if (this.selectedGenre) {
+    if (this.showFavorites) {
+      this.loadFavorites();
+    } else if (this.selectedGenre) {
       this.loadMoviesByGenre(this.selectedGenre);
     } else {
       this.loadTrendingMovies();
     }
+  }
+
+  getGenreNames(genreIds: number[]): string {
+    return genreIds
+      .map(id => this.genres.find((g: any) => g.id === id)?.name)
+      .filter(Boolean)
+      .join(', ');
   }
 }
