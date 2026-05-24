@@ -1,0 +1,80 @@
+.container {
+    padding: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #333;
+    color: #fff;
+}
+
+h2 {
+    color: #fff;
+}
+
+.genre-buttons {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.genre-buttons button {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.genre-buttons button:hover, .genre-buttons button.selected {
+    background-color: #e50914;
+    border-color: #e50914;
+}
+
+.movies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.movie-card {
+    background-color: #1c1c1c;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    display: block;
+}
+
+.movie-card .movie-title {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-card .release-date {
+    padding: 0 10px 10px;
+    font-size: 0.8rem;
+    color: #aaa;
+    margin: 0;
+}

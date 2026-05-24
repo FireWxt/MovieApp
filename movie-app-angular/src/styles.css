@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+body {
+    background-color: #141414;
+    color: #fff;
+}
+
+.container {
+    padding: 20px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+}
+
+.genre-buttons {
+    margin-bottom: 20px;
+}
+
+.genre-buttons button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.movies-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.movie-card {
+    background-color: #1c1c1c;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.movie-card img {
+    width: 100%;
+}
+
+.movie-card .movie-title {
+    padding: 10px;
+    font-size: 1rem;
+}
+
+.movie-card .release-date {
+    padding: 0 10px 10px;
+    font-size: 0.8rem;
+    color: #aaa;
+}
+

@@ -1,0 +1,25 @@
+<div class="container">
+  <input type="text" placeholder="Rechercher un film..." class="search-input" (input)="searchMovies($event)" />
+
+  <h2>Ou choisir un genre</h2>
+  <div class="genre-buttons">
+    <button *ngFor="let genre of genres" (click)="loadMoviesByGenre(genre.id)" [class.selected]="genre.id === selectedGenre">
+      {{ genre.name }}
+    </button>
+  </div>
+
+  <div class="movies-list">
+    <div *ngFor="let movie of movies" class="movie-card" (click)="selectMovie(movie)">
+      <img [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" [alt]="movie.title">
+      <h3 class="movie-title">{{ movie.title }}</h3>
+      <p class="release-date">Release Date: {{ movie.release_date }}</p>
+    </div>
+  </div>
+</div>
+
+<app-movie-details 
+  *ngIf="selectedMovie" 
+  [movie]="selectedMovie" 
+  [credits]="selectedMovieCredits" 
+  (close)="closeDetails()">
+</app-movie-details>
