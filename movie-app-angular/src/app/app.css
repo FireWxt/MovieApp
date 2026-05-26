@@ -24,6 +24,7 @@
 .navbar-buttons {
   display: flex;
   gap: 15px;
+  margin-right: 15px;
 }
 
 .nav-btn {
@@ -46,6 +47,57 @@
   background-color: #e50914;
   border-color: #e50914;
   color: #fff;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto;
+}
+
+.user-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(229, 9, 20, 0.1);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  border-radius: 5px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.user-email:hover {
+  background-color: rgba(229, 9, 20, 0.15);
+  border-color: rgba(229, 9, 20, 0.5);
+  color: #e50914;
+}
+
+.user-email::before {
+  content: '👤';
+  font-size: 1rem;
+}
+
+.logout-btn {
+  padding: 8px 16px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+  font-size: 0.9rem;
+}
+
+.logout-btn:hover {
+  background-color: #e50914;
+  transform: scale(1.05);
 }
 
 .view-container {

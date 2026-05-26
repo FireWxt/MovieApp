@@ -1,0 +1,14 @@
+[
+  {
+    "userId": "1779797744120",
+    "email": "semiaosimon@gmail.com",
+    "password": "$2b$10$DYmySRahzMaIP0p.a8a6WuYlS34dh3NrBQ/vlllYw/GjXTNl0Dmsu",
+    "createdAt": "2026-05-26T12:15:44.120Z"
+  },
+  {
+    "userId": "1779797873526",
+    "email": "manon@gmail.com",
+    "password": "$2b$10$.xNZWfv0CdOKpRPolap.rejoMut3E.rELpWYg8ee8uzkeydf3q.G6",
+    "createdAt": "2026-05-26T12:17:53.526Z"
+  }
+]

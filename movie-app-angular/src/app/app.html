@@ -1,4 +1,8 @@
-<div class="app-container">
+<div *ngIf="!isAuthenticated">
+  <app-auth></app-auth>
+</div>
+
+<div *ngIf="isAuthenticated" class="app-container">
   <nav class="navbar">
     <div class="navbar-logo">MovieShelf</div>
     <div class="navbar-buttons">
@@ -16,6 +20,10 @@
       >
         Watchlists
       </button>
+    </div>
+    <div class="navbar-user">
+      <span class="user-email">{{ currentUser?.email }}</span>
+      <button class="logout-btn" (click)="logout()">Déconnexion</button>
     </div>
   </nav>
 

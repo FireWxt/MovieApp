@@ -8,6 +8,7 @@ import genreRoute from './routes/genre-route.js';
 import genresRoute from './routes/genres-route.js';
 import moviesRoute from './routes/movies-route.js';
 import watchlistRoute from './routes/watchlist-route.js';
+import authRoute from './routes/auth-route.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,6 +19,7 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/auth', authRoute);
 app.use('/api/movies/trending', trendingRoute);
 app.use('/api/movies/genre', genreRoute);
 app.use('/api/genres', genresRoute);
