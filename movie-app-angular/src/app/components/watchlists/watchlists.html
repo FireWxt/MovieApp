@@ -1,0 +1,112 @@
+<div class="watchlists-container">
+  <div class="watchlists-panel">
+    <div class="watchlists-header">
+      <h2>Mes Watchlists</h2>
+      <button class="add-btn" (click)="toggleForm()">+ Nouvelle</button>
+    </div>
+
+    <div class="form-container" *ngIf="showForm">
+      <input 
+        type="text" 
+        placeholder="Nom de la watchlist..." 
+        [(ngModel)]="newWatchlistName"
+        class="input-field"
+      />
+      <div class="form-buttons">
+        <button class="btn-create" (click)="createWatchlist()">Créer</button>
+        <button class="btn-cancel" (click)="toggleForm()">Annuler</button>
+      </div>
+    </div>
+
+    <div class="watchlists-list">
+      <div 
+        *ngFor="let watchlist of watchlists" 
+        class="watchlist-item"
+        [class.selected]="selectedWatchlist?.id === watchlist.id"
+        (click)="selectWatchlist(watchlist)"
+      >
+        <div class="watchlist-item-header">
+          <div class="watchlist-info">
+            <h3>{{ watchlist.name }}</h3>
+            <p class="movie-count">{{ watchlist.movies?.length || 0 }} film(s)</p>
+          </div>
+          <button class="delete-btn" (click)="deleteWatchlist(watchlist.id); $event.stopPropagation()">
+            🗑️
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="watchlists.length === 0" class="empty-state">
+        <p>Aucune watchlist pour le moment</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="watchlist-details" *ngIf="selectedWatchlist">
+    <div class="details-header">
+      <div class="details-title">
+        <h2 *ngIf="editingId !== selectedWatchlist.id">{{ selectedWatchlist.name }}</h2>
+        <input 
+          *ngIf="editingId === selectedWatchlist.id"
+          type="text" 
+          [(ngModel)]="editingName"
+          class="edit-input"
+        />
+      </div>
+      <div class="details-actions">
+        <button 
+          *ngIf="editingId !== selectedWatchlist.id"
+          class="edit-btn" 
+          (click)="startEditing(selectedWatchlist)"
+        >
+          ✏️ Éditer
+        </button>
+        <button 
+          *ngIf="editingId === selectedWatchlist.id"
+          class="save-btn" 
+          (click)="saveEdit()"
+        >
+          ✓ Sauvegarder
+        </button>
+        <button 
+          *ngIf="editingId === selectedWatchlist.id"
+          class="cancel-btn" 
+          (click)="cancelEdit()"
+        >
+          ✕ Annuler
+        </button>
+      </div>
+    </div>
+
+    <div class="movies-in-watchlist">
+      <div *ngIf="selectedWatchlist.movies && selectedWatchlist.movies.length > 0">
+        <div *ngFor="let movie of selectedWatchlist.movies" class="movie-item-in-watchlist">
+          <img 
+            [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" 
+            [alt]="movie.title"
+            class="movie-poster"
+          />
+          <div class="movie-info">
+            <h4>{{ movie.title }}</h4>
+            <p class="release-date">{{ movie.release_date }}</p>
+            <p class="added-date">Ajouté: {{ movie.addedAt | date: 'dd/MM/yyyy' }}</p>
+          </div>
+          <button 
+            class="remove-btn" 
+            (click)="removeMovieFromWatchlist(selectedWatchlist.id, movie.id)"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!selectedWatchlist.movies || selectedWatchlist.movies.length === 0" class="empty-watchlist">
+        <p>Aucun film dans cette watchlist</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-selection" *ngIf="!selectedWatchlist && watchlists.length > 0">
+    <p>Sélectionnez une watchlist pour voir les détails</p>
+  </div>
+</div>

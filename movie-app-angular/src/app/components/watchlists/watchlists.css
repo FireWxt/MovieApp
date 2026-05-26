@@ -1,0 +1,324 @@
+.watchlists-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  min-height: 100vh;
+  background-color: #141414;
+  color: #fff;
+}
+
+.watchlists-panel {
+  flex: 0 0 300px;
+  background-color: #1c1c1c;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.watchlists-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.watchlists-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.add-btn {
+  padding: 8px 16px;
+  background-color: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+  background-color: #c4070f;
+}
+
+.form-container {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-create, .btn-cancel {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-create {
+  background-color: #e50914;
+  color: #fff;
+}
+
+.btn-create:hover {
+  background-color: #c4070f;
+}
+
+.btn-cancel {
+  background-color: #555;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #666;
+}
+
+.watchlists-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.watchlist-item {
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.watchlist-item:hover {
+  background-color: #333;
+}
+
+.watchlist-item.selected {
+  background-color: #e50914;
+}
+
+.watchlist-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.watchlist-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.movie-count {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.watchlist-item.selected .movie-count {
+  color: #fff;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  transition: opacity 0.3s;
+}
+
+.delete-btn:hover {
+  opacity: 0.7;
+}
+
+.empty-state {
+  text-align: center;
+  color: #aaa;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+.watchlist-details {
+  flex: 1;
+  background-color: #1c1c1c;
+  border-radius: 5px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.details-title {
+  flex: 1;
+}
+
+.details-title h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.edit-input {
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #e50914;
+  border-radius: 5px;
+  font-size: 2rem;
+}
+
+.details-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn, .save-btn, .cancel-btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.3s;
+}
+
+.edit-btn {
+  background-color: #e50914;
+  color: #fff;
+}
+
+.edit-btn:hover {
+  opacity: 0.8;
+}
+
+.save-btn {
+  background-color: #27ae60;
+  color: #fff;
+}
+
+.save-btn:hover {
+  opacity: 0.8;
+}
+
+.cancel-btn {
+  background-color: #555;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  opacity: 0.8;
+}
+
+.movies-in-watchlist {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.movie-item-in-watchlist {
+  display: flex;
+  gap: 15px;
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.movie-poster {
+  width: 80px;
+  height: auto;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.movie-info {
+  flex: 1;
+}
+
+.movie-info h4 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.release-date {
+  margin: 5px 0;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+.added-date {
+  margin: 5px 0 0 0;
+  font-size: 0.8rem;
+  color: #e50914;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #e50914;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0;
+  transition: color 0.3s;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  color: #fff;
+}
+
+.empty-watchlist {
+  text-align: center;
+  color: #aaa;
+  padding: 40px 20px;
+  font-size: 0.9rem;
+}
+
+.no-selection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .watchlists-container {
+    flex-direction: column;
+  }
+
+  .watchlists-panel {
+    flex: 0 0 auto;
+    max-height: 300px;
+  }
+
+  .watchlist-details {
+    max-height: 500px;
+  }
+}

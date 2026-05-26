@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
+import fs from 'fs';
 import trendingRoute from './routes/trending-route.js';
 import genreRoute from './routes/genre-route.js';
 import genresRoute from './routes/genres-route.js';
@@ -23,13 +24,23 @@ app.use('/api/genres', genresRoute);
 app.use('/api/movies', moviesRoute);
 app.use('/api/watchlists', watchlistRoute);
 
-// Servir les fichiers statiques du répertoire Angular
-app.use(express.static(path.join(__dirname, '../movie-app-angular/dist/movie-app-angular/browser')));
-
-// Rediriger toutes les autres requêtes vers l'application Angular
-app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../movie-app-angular/dist/movie-app-angular/browser/index.html'));
-});
+// Servir les fichiers statiques du répertoire Angular (s'ils existent)
+const staticPath = path.join(__dirname, '../movie-app-angular/dist/movie-app-angular/browser');
+if (fs.existsSync(staticPath)) {
+  app.use(express.static(staticPath));
+  
+  // Rediriger toutes les autres requêtes vers l'application Angular
+  app.use((req, res) => {
+    res.sendFile(path.join(staticPath, 'index.html'));
+  });
+} else {
+  // Si l'application Angular n'est pas compilée, renvoyer un message d'erreur
+  app.use((req, res) => {
+    res.status(200).json({ 
+      message: 'API MovieApp en ligne. L\'application Angular doit être compilée avec "ng build"' 
+    });
+  });
+}
 
 app.listen(port, () => {
   console.log(`Serveur démarré sur http://localhost:${port}`);

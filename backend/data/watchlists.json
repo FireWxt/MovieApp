@@ -1,0 +1,51 @@
+[
+  {
+    "id": "1779662225203",
+    "name": "Manon&moi",
+    "movies": [
+      {
+        "adult": false,
+        "backdrop_path": "/dd31qJxOarrHyGZwYsCzOjobQzP.jpg",
+        "genre_ids": [
+          28,
+          53
+        ],
+        "id": 1380291,
+        "title": "Tom Clancy's Jack Ryan: Ghost War",
+        "original_language": "en",
+        "original_title": "Tom Clancy's Jack Ryan: Ghost War",
+        "overview": "Jack Ryan is reluctantly pulled back into espionage when an international covert mission unravels a deadly conspiracy. Racing against time, he joins CIA allies Mike November & James Greer and sharp MI6 officer Emma Marlowe to battle a rogue black-ops unit in a high-stakes, deeply personal fight.",
+        "popularity": 525.2079,
+        "poster_path": "/8ehYxUh5MWE41AeE9gkHE8DKzvB.jpg",
+        "release_date": "2026-05-20",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.246,
+        "vote_count": 284,
+        "addedAt": "2026-05-26T11:21:22.693Z"
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/wMrV8SLne1jHLeYS0lLrA1Tf86P.jpg",
+        "genre_ids": [
+          27,
+          9648
+        ],
+        "id": 1304313,
+        "title": "Lee Cronin's The Mummy",
+        "original_language": "en",
+        "original_title": "Lee Cronin's The Mummy",
+        "overview": "The young daughter of a journalist disappears into the desert without a trace—eight years later, the broken family is shocked when she is returned to them, as what should be a joyful reunion turns into a living nightmare.",
+        "popularity": 802.3373,
+        "poster_path": "/uIb9Tvae5haF0XcQBaPyufmxbb0.jpg",
+        "release_date": "2026-04-15",
+        "softcore": false,
+        "video": false,
+        "vote_average": 8.04,
+        "vote_count": 1197,
+        "addedAt": "2026-05-26T11:22:12.904Z"
+      }
+    ],
+    "createdAt": "2026-05-24T22:37:05.203Z"
+  }
+]

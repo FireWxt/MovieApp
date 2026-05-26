@@ -7,9 +7,29 @@
         <h2>{{ movie.title }}</h2>
         <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
         <p><strong>Rating:</strong> {{ movie.vote_average }} / 10</p>
-        <button class="favorite-btn" (click)="toggleFavorite(movie)">
-          {{ isFavorite(movie.id) ? '★ Retirer des favoris' : '☆ Ajouter aux favoris' }}
-        </button>
+        <div class="buttons-container">
+          <button class="favorite-btn" (click)="toggleFavorite(movie)">
+            {{ isFavorite(movie.id) ? '★ Retirer des favoris' : '☆ Ajouter aux favoris' }}
+          </button>
+          <div class="watchlist-dropdown">
+            <button class="watchlist-btn" (click)="toggleWatchlistDropdown(); $event.stopPropagation()">
+              📋 Ajouter "{{ movie?.title }}" à watchlist
+            </button>
+            <div class="dropdown-menu" *ngIf="showWatchlistDropdown">
+              <button 
+                *ngFor="let watchlist of watchlists" 
+                type="button"
+                class="dropdown-item"
+                (click)="addMovieToWatchlist(watchlist.id); $event.stopPropagation()"
+              >
+                {{ watchlist.name }}
+              </button>
+              <div *ngIf="watchlists.length === 0" class="no-watchlists">
+                Aucune watchlist créée
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="movie-body">

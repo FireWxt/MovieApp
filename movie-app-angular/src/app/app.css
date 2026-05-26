@@ -1,0 +1,54 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #141414;
+}
+
+.navbar {
+  background-color: #000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  border-bottom: 2px solid #e50914;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e50914;
+  flex: 1;
+}
+
+.navbar-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.nav-btn {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover {
+  border-color: #e50914;
+  color: #e50914;
+}
+
+.nav-btn.active {
+  background-color: #e50914;
+  border-color: #e50914;
+  color: #fff;
+}
+
+.view-container {
+  flex: 1;
+  overflow: auto;
+}

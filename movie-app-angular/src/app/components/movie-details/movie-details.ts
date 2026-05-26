@@ -1,5 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { WatchlistService } from '../../services/watchlist';
 
 interface Actor {
   profile_path: string;
@@ -13,10 +14,57 @@ interface Actor {
   templateUrl: './movie-details.html',
   styleUrls: ['./movie-details.css']
 })
-export class MovieDetails {
+export class MovieDetails implements OnInit {
   @Input() movie: any;
   @Input() credits: { cast: Actor[] } | null = null;
   @Output() close = new EventEmitter<void>();
+
+  watchlists: any[] = [];
+  showWatchlistDropdown: boolean = false;
+
+  constructor(private watchlistService: WatchlistService, private cdr: ChangeDetectorRef) { }
+
+  ngOnInit(): void {
+    this.loadWatchlists();
+  }
+
+  loadWatchlists(): void {
+    this.watchlistService.getAllWatchlists().subscribe(data => {
+      this.watchlists = data;
+      this.cdr.detectChanges();
+    });
+  }
+
+  toggleWatchlistDropdown(): void {
+    // Si une seule watchlist, l'ajouter directement
+    if (this.watchlists.length === 1) {
+      this.addMovieToWatchlist(this.watchlists[0].id);
+      return;
+    }
+    
+    // Sinon afficher le dropdown
+    this.showWatchlistDropdown = !this.showWatchlistDropdown;
+    console.log('[DEBUG] Bouton watchlist cliqué - Movie:', this.movie?.title);
+    console.log('[DEBUG] Watchlists disponibles:', this.watchlists);
+  }
+
+  addMovieToWatchlist(watchlistId: string): void {
+    console.log('[DEBUG] Tentative d\'ajouter le film:', this.movie?.title, 'à la watchlist:', watchlistId);
+    console.log('[DEBUG] Données du film:', this.movie);
+    
+    this.watchlistService.addMovieToWatchlist(watchlistId, this.movie).subscribe(
+      (response) => {
+        console.log('[DEBUG] Succès! Film ajouté à la watchlist:', response);
+        this.showWatchlistDropdown = false;
+        this.loadWatchlists();
+        alert(`Film "${this.movie.title}" ajouté à la watchlist!`);
+      },
+      (error) => {
+        console.error('[DEBUG] Erreur lors de l\'ajout du film:', error);
+        alert('Erreur: ' + (error.error?.message || 'Le film est peut-être déjà dans cette watchlist'));
+      }
+    );
+  }
 
   isFavorite(movieId: number): boolean {
     const favorites = this.getFavorites();
@@ -46,3 +94,4 @@ export class MovieDetails {
     this.close.emit();
   }
 }
+

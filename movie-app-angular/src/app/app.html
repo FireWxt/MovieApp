@@ -1,1 +1,26 @@
-<app-movies-list></app-movies-list>
+<div class="app-container">
+  <nav class="navbar">
+    <div class="navbar-logo">🎬 MovieApp</div>
+    <div class="navbar-buttons">
+      <button 
+        class="nav-btn" 
+        [class.active]="currentView === 'movies'"
+        (click)="switchView('movies')"
+      >
+        Films
+      </button>
+      <button 
+        class="nav-btn" 
+        [class.active]="currentView === 'watchlists'"
+        (click)="switchView('watchlists')"
+      >
+        Watchlists
+      </button>
+    </div>
+  </nav>
+
+  <div class="view-container">
+    <app-movies-list *ngIf="currentView === 'movies'"></app-movies-list>
+    <app-watchlists *ngIf="currentView === 'watchlists'"></app-watchlists>
+  </div>
+</div>
