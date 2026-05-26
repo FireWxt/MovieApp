@@ -2,17 +2,45 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const watchlistsFile = path.join(__dirname, '../data/watchlists.json');
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 // Créer le répertoire data s'il n'existe pas
 const dataDir = path.join(__dirname, '../data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Middleware de vérification du token JWT
+function verifyToken(req, res, next) {
+  console.log('[WATCHLIST] Vérification du token...');
+  console.log('[WATCHLIST] Headers reçus:', req.headers);
+  const authHeader = req.headers.authorization;
+  console.log('[WATCHLIST] Authorization header:', authHeader);
+  
+  const token = authHeader?.split(' ')[1];
+
+  if (!token) {
+    console.log('[WATCHLIST] ❌ Token manquant');
+    return res.status(401).json({ message: 'Token manquant' });
+  }
+
+  try {
+    console.log('[WATCHLIST] Vérification du token avec JWT_SECRET');
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.user = decoded;
+    console.log('[WATCHLIST] ✅ Token vérifié pour userId:', decoded.userId);
+    next();
+  } catch (error) {
+    console.log('[WATCHLIST] ❌ Token invalide:', error.message);
+    res.status(401).json({ message: 'Token invalide ou expiré' });
+  }
 }
 
 // Lire les watchlists depuis le fichier
@@ -37,16 +65,21 @@ function writeWatchlists(watchlists) {
   }
 }
 
-// GET - Récupérer toutes les watchlists
-router.get('/', (req, res) => {
+// GET - Récupérer toutes les watchlists de l'utilisateur
+router.get('/', verifyToken, (req, res) => {
+  const userId = req.user.userId;
+  console.log('[WATCHLIST GET] userId:', userId);
   const watchlists = readWatchlists();
-  res.json(watchlists);
+  const userWatchlists = watchlists.filter(w => w.userId === userId);
+  console.log('[WATCHLIST GET] Toutes les watchlists:', watchlists.length, 'Watchlists de l\'utilisateur:', userWatchlists.length);
+  res.json(userWatchlists);
 });
 
 // GET - Récupérer une watchlist spécifique par ID
-router.get('/:id', (req, res) => {
+router.get('/:id', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const watchlists = readWatchlists();
-  const watchlist = watchlists.find(w => w.id === req.params.id);
+  const watchlist = watchlists.find(w => w.id === req.params.id && w.userId === userId);
   
   if (!watchlist) {
     return res.status(404).json({ message: 'Watchlist non trouvée' });
@@ -56,7 +89,8 @@ router.get('/:id', (req, res) => {
 });
 
 // POST - Créer une nouvelle watchlist
-router.post('/', (req, res) => {
+router.post('/', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const { name } = req.body;
   
   if (!name) {
@@ -66,6 +100,7 @@ router.post('/', (req, res) => {
   const watchlists = readWatchlists();
   const newWatchlist = {
     id: Date.now().toString(),
+    userId,
     name,
     movies: [],
     createdAt: new Date().toISOString()
@@ -78,7 +113,8 @@ router.post('/', (req, res) => {
 });
 
 // POST - Ajouter un film à une watchlist
-router.post('/:id/movies', (req, res) => {
+router.post('/:id/movies', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const { movie } = req.body;
   
   if (!movie) {
@@ -86,7 +122,7 @@ router.post('/:id/movies', (req, res) => {
   }
   
   const watchlists = readWatchlists();
-  const watchlist = watchlists.find(w => w.id === req.params.id);
+  const watchlist = watchlists.find(w => w.id === req.params.id && w.userId === userId);
   
   if (!watchlist) {
     return res.status(404).json({ message: 'Watchlist non trouvée' });
@@ -108,9 +144,10 @@ router.post('/:id/movies', (req, res) => {
 });
 
 // DELETE - Supprimer un film d'une watchlist
-router.delete('/:id/movies/:movieId', (req, res) => {
+router.delete('/:id/movies/:movieId', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const watchlists = readWatchlists();
-  const watchlist = watchlists.find(w => w.id === req.params.id);
+  const watchlist = watchlists.find(w => w.id === req.params.id && w.userId === userId);
   
   if (!watchlist) {
     return res.status(404).json({ message: 'Watchlist non trouvée' });
@@ -129,9 +166,10 @@ router.delete('/:id/movies/:movieId', (req, res) => {
 });
 
 // DELETE - Supprimer une watchlist complète
-router.delete('/:id', (req, res) => {
+router.delete('/:id', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const watchlists = readWatchlists();
-  const watchlistIndex = watchlists.findIndex(w => w.id === req.params.id);
+  const watchlistIndex = watchlists.findIndex(w => w.id === req.params.id && w.userId === userId);
   
   if (watchlistIndex === -1) {
     return res.status(404).json({ message: 'Watchlist non trouvée' });
@@ -144,7 +182,8 @@ router.delete('/:id', (req, res) => {
 });
 
 // PUT - Modifier le nom d'une watchlist
-router.put('/:id', (req, res) => {
+router.put('/:id', verifyToken, (req, res) => {
+  const userId = req.user.userId;
   const { name } = req.body;
   
   if (!name) {
@@ -152,7 +191,7 @@ router.put('/:id', (req, res) => {
   }
   
   const watchlists = readWatchlists();
-  const watchlist = watchlists.find(w => w.id === req.params.id);
+  const watchlist = watchlists.find(w => w.id === req.params.id && w.userId === userId);
   
   if (!watchlist) {
     return res.status(404).json({ message: 'Watchlist non trouvée' });

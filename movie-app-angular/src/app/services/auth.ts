@@ -37,32 +37,51 @@ export class AuthService {
   }
 
   signup(email: string, password: string): Observable<any> {
+    console.log('[AUTH] signup() appelé avec email:', email);
     return this.http.post<any>(`${this.apiUrl}/signup`, { email, password }).pipe(
       tap(response => {
+        console.log('[AUTH] ✅ Réponse signup reçue:', response);
         this.saveUserData(response);
       })
     );
   }
 
   login(email: string, password: string): Observable<any> {
+    console.log('[AUTH] login() appelé avec email:', email);
     return this.http.post<any>(`${this.apiUrl}/login`, { email, password }).pipe(
       tap(response => {
+        console.log('[AUTH] ✅ Réponse login reçue:', response);
         this.saveUserData(response);
       })
     );
   }
 
   private saveUserData(response: any): void {
+    console.log('[AUTH] 🔍 saveUserData() appelé');
+    console.log('[AUTH] Response reçue:', response);
+    console.log('[AUTH] userId:', response.userId);
+    console.log('[AUTH] email:', response.email);
+    console.log('[AUTH] accessToken existe:', !!response.accessToken);
+    console.log('[AUTH] refreshToken existe:', !!response.refreshToken);
+    
     const userData = {
       userId: response.userId,
       email: response.email,
       accessToken: response.accessToken,
       refreshToken: response.refreshToken
     };
+    
     localStorage.setItem('currentUser', JSON.stringify(userData));
+    console.log('[AUTH] ✅ currentUser sauvegardé');
+    
     localStorage.setItem('accessToken', response.accessToken);
+    console.log('[AUTH] ✅ accessToken sauvegardé:', response.accessToken.substring(0, 20) + '...');
+    
     localStorage.setItem('refreshToken', response.refreshToken);
+    console.log('[AUTH] ✅ refreshToken sauvegardé');
+    
     this.currentUserSubject.next(userData);
+    console.log('[AUTH] ✅ currentUserSubject mis à jour');
   }
 
   logout(): void {
@@ -84,6 +103,7 @@ export class AuthService {
   }
 
   private clearUserData(): void {
+    console.log('[AUTH] Effacement des données utilisateur');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
@@ -100,6 +120,11 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
+    console.log('[AUTH] getAccessToken() appelé - Token existe:', !!token);
+    if (token) {
+      console.log('[AUTH] Token récupéré:', token.substring(0, 20) + '...');
+    }
+    return token;
   }
 }

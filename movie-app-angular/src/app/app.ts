@@ -41,6 +41,7 @@ export class App implements OnInit {
   }
 
   logout(): void {
+    console.log('[APP] Déconnexion...');
     this.authService.logout();
   }
 }

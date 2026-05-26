@@ -9,6 +9,8 @@ const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+console.log('[AUTH-ROUTE] Module chargé et routeur créé');
+
 const usersFile = path.join(__dirname, '../data/users.json');
 const dataDir = path.join(__dirname, '../data');
 
@@ -65,26 +67,39 @@ function generateTokens(userId, email) {
 // POST - Inscription
 router.post('/signup', async (req, res) => {
   try {
+    console.log('[AUTH] POST /signup appelé');
+    console.log('[AUTH] req.body:', req.body);
     const { email, password } = req.body;
+
+    console.log('[AUTH] Email reçu:', email);
+    console.log('[AUTH] Password reçu:', password ? '***' : 'UNDEFINED');
 
     // Validation
     if (!email || !password) {
+      console.log('[AUTH] ❌ Email ou password manquant');
       return res.status(400).json({ message: 'Email et mot de passe requis' });
     }
 
     if (password.length < 6) {
+      console.log('[AUTH] ❌ Password trop court:', password.length);
       return res.status(400).json({ message: 'Le mot de passe doit contenir au moins 6 caractères' });
     }
 
     const users = readUsers();
+    console.log('[AUTH] Nombre d\'utilisateurs existants:', users.length);
 
     // Vérifier si l'utilisateur existe déjà
-    if (users.find(u => u.email === email)) {
+    const existingUser = users.find(u => u.email === email);
+    if (existingUser) {
+      console.log('[AUTH] ❌ Email déjà utilisé:', email);
       return res.status(400).json({ message: 'Cet email est déjà utilisé' });
     }
+    console.log('[AUTH] ✅ Email disponible');
 
     // Hasher le mot de passe avec un sel
+    console.log('[AUTH] Hachage du mot de passe...');
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('[AUTH] ✅ Mot de passe haché');
 
     // Créer le nouvel utilisateur
     const newUser = {
@@ -95,10 +110,15 @@ router.post('/signup', async (req, res) => {
     };
 
     users.push(newUser);
+    console.log('[AUTH] ✅ Utilisateur ajouté en mémoire');
+    
     writeUsers(users);
+    console.log('[AUTH] ✅ Utilisateur sauvegardé');
 
     // Générer les tokens
+    console.log('[AUTH] Génération des tokens...');
     const { accessToken, refreshToken } = generateTokens(newUser.userId, email);
+    console.log('[AUTH] ✅ Tokens générés');
 
     // Sauvegarder le refresh token (optionnel, pour la révocation)
     const tokensFile = path.join(__dirname, '../data/tokens.json');
@@ -113,6 +133,7 @@ router.post('/signup', async (req, res) => {
     });
     fs.writeFileSync(tokensFile, JSON.stringify(tokens, null, 2), 'utf8');
 
+    console.log('[AUTH] Envoi de la réponse de succès');
     res.status(201).json({
       message: 'Utilisateur créé avec succès',
       userId: newUser.userId,
@@ -120,15 +141,17 @@ router.post('/signup', async (req, res) => {
       accessToken,
       refreshToken
     });
+    console.log('[AUTH] ✅ Inscription réussie pour:', email);
   } catch (error) {
-    console.error('Erreur lors de l\'inscription:', error);
-    res.status(500).json({ message: 'Erreur serveur' });
+    console.error('[AUTH] ❌ Erreur lors de l\'inscription:', error);
+    res.status(500).json({ message: 'Erreur serveur: ' + error.message });
   }
 });
 
 // POST - Connexion
 router.post('/login', async (req, res) => {
   try {
+    console.log('[AUTH] POST /login appelé');
     const { email, password } = req.body;
 
     // Validation
