@@ -56,6 +56,13 @@
       <div class="details-actions">
         <button 
           *ngIf="editingId !== selectedWatchlist.id"
+          class="add-movie-btn" 
+          (click)="toggleAddMovieForm()"
+        >
+          ➕ Ajouter un film
+        </button>
+        <button 
+          *ngIf="editingId !== selectedWatchlist.id"
           class="edit-btn" 
           (click)="startEditing(selectedWatchlist)"
         >
@@ -75,6 +82,36 @@
         >
           ✕ Annuler
         </button>
+      </div>
+    </div>
+
+    <div class="add-movie-section" *ngIf="showAddMovieForm">
+      <input 
+        type="text" 
+        placeholder="Rechercher un film..." 
+        [(ngModel)]="searchQuery"
+        (input)="searchMovies(searchQuery)"
+        class="search-input"
+      />
+      <div class="movies-list-dropdown">
+        <div *ngFor="let movie of availableMovies" class="movie-item-dropdown">
+          <img 
+            [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" 
+            [alt]="movie.title"
+            class="movie-poster-small"
+          />
+          <div class="movie-info-dropdown">
+            <h4>{{ movie.title }}</h4>
+            <p class="release-date">{{ movie.release_date }}</p>
+          </div>
+          <button 
+            class="add-btn-small"
+            [disabled]="isMovieInWatchlist(movie.id)"
+            (click)="addMovieToSelectedWatchlist(movie)"
+          >
+            {{ isMovieInWatchlist(movie.id) ? '✓ Déjà ajouté' : '➕ Ajouter' }}
+          </button>
+        </div>
       </div>
     </div>
 

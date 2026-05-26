@@ -57,11 +57,9 @@ export class MovieDetails implements OnInit {
         console.log('[DEBUG] Succès! Film ajouté à la watchlist:', response);
         this.showWatchlistDropdown = false;
         this.loadWatchlists();
-        alert(`Film "${this.movie.title}" ajouté à la watchlist!`);
       },
       (error) => {
         console.error('[DEBUG] Erreur lors de l\'ajout du film:', error);
-        alert('Erreur: ' + (error.error?.message || 'Le film est peut-être déjà dans cette watchlist'));
       }
     );
   }

@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WatchlistService } from '../../services/watchlist';
+import { Movie } from '../../services/movie';
 
 @Component({
   selector: 'app-watchlists',
@@ -16,8 +17,17 @@ export class WatchlistsComponent implements OnInit {
   newWatchlistName: string = '';
   editingId: string | null = null;
   editingName: string = '';
+  
+  // Pour ajouter des films
+  showAddMovieForm: boolean = false;
+  availableMovies: any[] = [];
+  searchQuery: string = '';
 
-  constructor(private watchlistService: WatchlistService, private cdr: ChangeDetectorRef) { }
+  constructor(
+    private watchlistService: WatchlistService, 
+    private movieService: Movie,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     console.log('[WATCHLIST] Initialisation du composant watchlist');
@@ -144,5 +154,76 @@ export class WatchlistsComponent implements OnInit {
     console.log('[WATCHLIST] Annulation de l\'édition');
     this.editingId = null;
     this.editingName = '';
+  }
+
+  toggleAddMovieForm(): void {
+    this.showAddMovieForm = !this.showAddMovieForm;
+    if (this.showAddMovieForm && this.availableMovies.length === 0) {
+      this.loadTrendingMovies();
+    }
+  }
+
+  loadTrendingMovies(): void {
+    console.log('[WATCHLIST] Chargement des films trending...');
+    this.movieService.getTrendingMovies().subscribe(
+      (data) => {
+        this.availableMovies = data;
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('[WATCHLIST] Erreur lors du chargement des films:', error);
+      }
+    );
+  }
+
+  searchMovies(query: string): void {
+    if (query.trim()) {
+      console.log('[WATCHLIST] Recherche de films:', query);
+      this.movieService.searchMovies(query).subscribe(
+        (data) => {
+          this.availableMovies = data;
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error('[WATCHLIST] Erreur lors de la recherche:', error);
+        }
+      );
+    } else {
+      this.loadTrendingMovies();
+    }
+  }
+
+  addMovieToSelectedWatchlist(movie: any): void {
+    if (!this.selectedWatchlist) {
+      console.warn('[WATCHLIST] Aucune watchlist sélectionnée');
+      return;
+    }
+
+    console.log('[WATCHLIST] Ajout du film', movie.title, 'à la watchlist', this.selectedWatchlist.name);
+    this.watchlistService.addMovieToWatchlist(this.selectedWatchlist.id, movie).subscribe(
+      (response) => {
+        console.log('[WATCHLIST] Film ajouté avec succès');
+        // Recharger la watchlist depuis le serveur pour avoir les données à jour
+        this.watchlistService.getWatchlist(this.selectedWatchlist.id).subscribe(
+          (updatedWatchlist) => {
+            this.selectedWatchlist = updatedWatchlist;
+            this.showAddMovieForm = false;
+            this.searchQuery = '';
+            this.availableMovies = [];
+            this.cdr.detectChanges();
+          }
+        );
+      },
+      (error) => {
+        console.error('[WATCHLIST] Erreur lors de l\'ajout:', error);
+      }
+    );
+  }
+
+  isMovieInWatchlist(movieId: number): boolean {
+    if (!this.selectedWatchlist || !this.selectedWatchlist.movies) {
+      return false;
+    }
+    return this.selectedWatchlist.movies.some((m: any) => m.id === movieId);
   }
 }

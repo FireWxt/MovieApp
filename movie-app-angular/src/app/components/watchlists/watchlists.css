@@ -308,6 +308,108 @@
   font-size: 1.1rem;
 }
 
+.add-movie-btn {
+  padding: 10px 15px;
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.add-movie-btn:hover {
+  background-color: #229954;
+}
+
+.add-movie-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #e50914;
+}
+
+.movies-list-dropdown {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.movie-item-dropdown {
+  display: flex;
+  gap: 15px;
+  padding: 10px;
+  background-color: #1c1c1c;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.movie-poster-small {
+  width: 100px;
+  height: auto;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+
+.movie-info-dropdown {
+  flex: 1;
+  min-width: 0;
+}
+
+.movie-info-dropdown h4 {
+  margin: 0 0 3px 0;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.movie-info-dropdown .release-date {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #aaa;
+}
+
+.add-btn-small {
+  padding: 8px 12px;
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.3s;
+}
+
+.add-btn-small:hover:not(:disabled) {
+  background-color: #229954;
+}
+
+.add-btn-small:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 @media (max-width: 768px) {
   .watchlists-container {
     flex-direction: column;
