@@ -22,6 +22,7 @@ export class WatchlistsComponent implements OnInit {
   showAddMovieForm: boolean = false;
   availableMovies: any[] = [];
   searchQuery: string = '';
+  isLoadingMovies: boolean = false;
 
   constructor(
     private watchlistService: WatchlistService, 
@@ -158,20 +159,23 @@ export class WatchlistsComponent implements OnInit {
 
   toggleAddMovieForm(): void {
     this.showAddMovieForm = !this.showAddMovieForm;
-    if (this.showAddMovieForm && this.availableMovies.length === 0) {
+    if (this.showAddMovieForm) {
       this.loadTrendingMovies();
     }
   }
 
   loadTrendingMovies(): void {
     console.log('[WATCHLIST] Chargement des films trending...');
+    this.isLoadingMovies = true;
     this.movieService.getTrendingMovies().subscribe(
       (data) => {
         this.availableMovies = data;
+        this.isLoadingMovies = false;
         this.cdr.detectChanges();
       },
       (error) => {
         console.error('[WATCHLIST] Erreur lors du chargement des films:', error);
+        this.isLoadingMovies = false;
       }
     );
   }
@@ -179,13 +183,16 @@ export class WatchlistsComponent implements OnInit {
   searchMovies(query: string): void {
     if (query.trim()) {
       console.log('[WATCHLIST] Recherche de films:', query);
+      this.isLoadingMovies = true;
       this.movieService.searchMovies(query).subscribe(
         (data) => {
           this.availableMovies = data;
+          this.isLoadingMovies = false;
           this.cdr.detectChanges();
         },
         (error) => {
           console.error('[WATCHLIST] Erreur lors de la recherche:', error);
+          this.isLoadingMovies = false;
         }
       );
     } else {

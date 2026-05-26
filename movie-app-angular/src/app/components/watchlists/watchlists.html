@@ -59,14 +59,14 @@
           class="add-movie-btn" 
           (click)="toggleAddMovieForm()"
         >
-          ➕ Ajouter un film
+          Ajouter un film
         </button>
         <button 
           *ngIf="editingId !== selectedWatchlist.id"
           class="edit-btn" 
           (click)="startEditing(selectedWatchlist)"
         >
-          ✏️ Éditer
+          Modifier 
         </button>
         <button 
           *ngIf="editingId === selectedWatchlist.id"
@@ -92,8 +92,20 @@
         [(ngModel)]="searchQuery"
         (input)="searchMovies(searchQuery)"
         class="search-input"
+        [disabled]="isLoadingMovies"
       />
-      <div class="movies-list-dropdown">
+      
+      <!-- Loader pendant le chargement -->
+      <div *ngIf="isLoadingMovies" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Chargement des films...</p>
+      </div>
+
+      <!-- Liste des films -->
+      <div class="movies-list-dropdown" *ngIf="!isLoadingMovies">
+        <div *ngIf="availableMovies.length === 0" class="no-movies-found">
+          <p>Aucun film trouvé</p>
+        </div>
         <div *ngFor="let movie of availableMovies" class="movie-item-dropdown">
           <img 
             [src]="'https://image.tmdb.org/t/p/w200' + movie.poster_path" 

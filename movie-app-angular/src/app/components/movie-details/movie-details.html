@@ -32,6 +32,30 @@
         </div>
       </div>
     </div>
+
+    <!-- Popup pour sélectionner la watchlist -->
+    <div class="watchlist-modal-overlay" *ngIf="showWatchlistModal" (click)="closeWatchlistModal()">
+      <div class="watchlist-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Sélectionnez une watchlist</h3>
+          <button class="close-modal-btn" (click)="closeWatchlistModal()">✕</button>
+        </div>
+        <div class="modal-content">
+          <button 
+            *ngFor="let watchlist of watchlists" 
+            type="button"
+            class="watchlist-option"
+            (click)="addMovieToWatchlist(watchlist.id)"
+          >
+            <div class="option-info">
+              <h4>{{ watchlist.name }}</h4>
+              <p>{{ watchlist.movies?.length || 0 }} film(s)</p>
+            </div>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="movie-body">
       <h3>Overview</h3>
       <p>{{ movie.overview }}</p>

@@ -1,14 +1,60 @@
 [
   {
-    "id": "1779662225203",
-    "name": "Manon&moi",
+    "id": "1779795118170",
+    "name": "Test",
     "movies": [],
-    "createdAt": "2026-05-24T22:37:05.203Z"
+    "createdAt": "2026-05-26T11:31:58.170Z"
   },
   {
-    "id": "1779794653241",
-    "name": "rezsrfsdfd",
-    "movies": [],
-    "createdAt": "2026-05-26T11:24:13.241Z"
+    "id": "1779795165498",
+    "name": "Manon",
+    "movies": [
+      {
+        "adult": false,
+        "backdrop_path": "/9Z2uDYXqJrlmePznQQJhL6d92Rq.jpg",
+        "genre_ids": [
+          10751,
+          35,
+          12,
+          14,
+          16
+        ],
+        "id": 1226863,
+        "title": "The Super Mario Galaxy Movie",
+        "original_language": "en",
+        "original_title": "The Super Mario Galaxy Movie",
+        "overview": "Having thwarted Bowser's previous plot to marry Princess Peach, Mario and Luigi now face a fresh threat in Bowser Jr., who is determined to liberate his father from captivity and restore the family legacy. Alongside companions new and old, the brothers travel across the stars to stop the young heir's crusade.",
+        "popularity": 387.0855,
+        "poster_path": "/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg",
+        "release_date": "2026-04-01",
+        "softcore": false,
+        "video": false,
+        "vote_average": 7.975,
+        "vote_count": 1885,
+        "addedAt": "2026-05-26T11:32:55.460Z"
+      },
+      {
+        "adult": false,
+        "backdrop_path": "/2I1OFQJ0L9T0dpU6FobKFWV2PxX.jpg",
+        "genre_ids": [
+          878,
+          12
+        ],
+        "id": 687163,
+        "title": "Project Hail Mary",
+        "original_language": "en",
+        "original_title": "Project Hail Mary",
+        "overview": "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
+        "popularity": 402.5239,
+        "poster_path": "/yihdXomYb5kTeSivtFndMy5iDmf.jpg",
+        "release_date": "2026-03-15",
+        "softcore": false,
+        "video": false,
+        "vote_average": 8.629,
+        "vote_count": 4105,
+        "addedAt": "2026-05-26T11:33:03.833Z"
+      }
+    ],
+    "createdAt": "2026-05-26T11:32:45.498Z"
   }
 ]

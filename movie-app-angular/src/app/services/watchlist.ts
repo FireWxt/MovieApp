@@ -32,7 +32,9 @@ export class WatchlistService {
 
   // Créer une nouvelle watchlist
   createWatchlist(name: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { name });
+    return this.http.post<any>(this.apiUrl, { name }).pipe(
+      tap(() => this.notifyUpdate())
+    );
   }
 
   // Ajouter un film à une watchlist
@@ -44,16 +46,22 @@ export class WatchlistService {
 
   // Supprimer un film d'une watchlist
   removeMovieFromWatchlist(watchlistId: string, movieId: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${watchlistId}/movies/${movieId}`);
+    return this.http.delete<any>(`${this.apiUrl}/${watchlistId}/movies/${movieId}`).pipe(
+      tap(() => this.notifyUpdate())
+    );
   }
 
   // Supprimer une watchlist complète
   deleteWatchlist(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.notifyUpdate())
+    );
   }
 
   // Modifier le nom d'une watchlist
   updateWatchlist(id: string, name: string): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, { name });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, { name }).pipe(
+      tap(() => this.notifyUpdate())
+    );
   }
 }

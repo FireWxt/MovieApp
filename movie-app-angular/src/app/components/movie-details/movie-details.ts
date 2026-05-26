@@ -21,11 +21,18 @@ export class MovieDetails implements OnInit {
 
   watchlists: any[] = [];
   showWatchlistDropdown: boolean = false;
+  showWatchlistModal: boolean = false;
 
   constructor(private watchlistService: WatchlistService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.loadWatchlists();
+    
+    // Écouter les changements de watchlist (nouvelle watchlist créée, film ajouté, etc.)
+    this.watchlistService.getWatchlistUpdated().subscribe(() => {
+      console.log('[DEBUG] Changement de watchlist détecté, rechargement...');
+      this.loadWatchlists();
+    });
   }
 
   loadWatchlists(): void {
@@ -42,10 +49,21 @@ export class MovieDetails implements OnInit {
       return;
     }
     
-    // Sinon afficher le dropdown
+    // Si plusieurs watchlists, afficher la popup
+    if (this.watchlists.length > 1) {
+      this.showWatchlistModal = true;
+      console.log('[DEBUG] Popup watchlist affichée');
+      return;
+    }
+    
+    // Sinon afficher le dropdown (aucune watchlist)
     this.showWatchlistDropdown = !this.showWatchlistDropdown;
     console.log('[DEBUG] Bouton watchlist cliqué - Movie:', this.movie?.title);
     console.log('[DEBUG] Watchlists disponibles:', this.watchlists);
+  }
+
+  closeWatchlistModal(): void {
+    this.showWatchlistModal = false;
   }
 
   addMovieToWatchlist(watchlistId: string): void {
