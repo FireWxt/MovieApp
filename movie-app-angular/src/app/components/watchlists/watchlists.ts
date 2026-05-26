@@ -91,21 +91,19 @@ export class WatchlistsComponent implements OnInit {
   }
 
   deleteWatchlist(id: string): void {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette watchlist ?')) {
-      console.log('[WATCHLIST] Suppression de la watchlist:', id);
-      this.watchlistService.deleteWatchlist(id).subscribe(
-        () => {
-          console.log('[WATCHLIST] Watchlist supprimée avec succès');
-          this.loadWatchlists();
-          if (this.selectedWatchlist?.id === id) {
-            this.selectedWatchlist = null;
-          }
-        },
-        (error) => {
-          console.error('[WATCHLIST] Erreur lors de la suppression:', error);
+    console.log('[WATCHLIST] Suppression de la watchlist:', id);
+    this.watchlistService.deleteWatchlist(id).subscribe(
+      () => {
+        console.log('[WATCHLIST] Watchlist supprimée avec succès');
+        this.loadWatchlists();
+        if (this.selectedWatchlist?.id === id) {
+          this.selectedWatchlist = null;
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('[WATCHLIST] Erreur lors de la suppression:', error);
+      }
+    );
   }
 
   removeMovieFromWatchlist(watchlistId: string, movieId: number): void {
